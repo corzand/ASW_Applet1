@@ -79,7 +79,7 @@ public class LoginApplet extends JApplet {
 
                 data.appendChild(root);
 
-                Document answer = hc.execute("users", data);
+                Document answer = hc.execute("application", data);
                 responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent()));
                 responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
 

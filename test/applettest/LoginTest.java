@@ -81,10 +81,12 @@ public class LoginTest {
 
                 data.appendChild(root);
 
-                Document answer = hc.execute("users", data);
+                Document answer = hc.execute("application", data);
                 responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent()));
                 responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
 
+                System.out.println(responseViewModel.isError()+"");
+                System.out.println(responseViewModel.getErrorMessage());
 
             } catch (ParserConfigurationException | DOMException | TransformerException | SAXException | IOException ex){
                 System.out.println(ex);
