@@ -46,8 +46,8 @@ public class LoginApplet extends JApplet {
             LoginRequestViewModel viewModel = new LoginRequestViewModel();
             BaseResponseViewModel responseViewModel = new BaseResponseViewModel();
 
-            viewModel.username = txt_user.getText();
-            viewModel.password = new String(txt_password.getPassword());
+            viewModel.setUsername(txt_user.getText());
+            viewModel.setPassword(new String(txt_password.getPassword()));
             try {
 
                 //Code below: JSON over HTTP
@@ -69,10 +69,10 @@ public class LoginApplet extends JApplet {
                 Element root = data.createElement("login");
 
                 Element username = data.createElement("username");
-                username.setTextContent(viewModel.username);
+                username.setTextContent(viewModel.getUsername());
 
                 Element password = data.createElement("password");
-                password.setTextContent(viewModel.password);
+                password.setTextContent(viewModel.getPassword());
 
                 root.appendChild(username);
                 root.appendChild(password);
@@ -80,10 +80,10 @@ public class LoginApplet extends JApplet {
                 data.appendChild(root);
 
                 Document answer = hc.execute("users", data);
-                responseViewModel.hasError = Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent());
-                responseViewModel.errorMessage = answer.getElementsByTagName("errorMessage").item(0).getTextContent();
+                responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent()));
+                responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
 
-                lbl_result.setText(responseViewModel.hasError ? responseViewModel.errorMessage : "logged-in");
+                lbl_result.setText(responseViewModel.isError() ? responseViewModel.getErrorMessage() : "logged-in");
 
             } catch (TransformerConfigurationException ex) {
                 Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);

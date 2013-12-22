@@ -48,8 +48,8 @@ public class LoginTest {
             LoginRequestViewModel viewModel = new LoginRequestViewModel();
             BaseResponseViewModel responseViewModel = new BaseResponseViewModel();
 
-            viewModel.username = txt_user.getText();
-            viewModel.password = new String(txt_password.getPassword());
+            viewModel.setUsername(txt_user.getText());
+            viewModel.setPassword(new String(txt_password.getPassword()));
             try {
 
                 //Code below: JSON over HTTP
@@ -71,22 +71,20 @@ public class LoginTest {
                 Element root = data.createElement("login");
 
                 Element username = data.createElement("username");
-                username.setTextContent(viewModel.username);
+                username.setTextContent(viewModel.getUsername());
 
                 Element password = data.createElement("password");
-                password.setTextContent(viewModel.password);
+                password.setTextContent(viewModel.getPassword());
 
                 root.appendChild(username);
                 root.appendChild(password);
 
-                data.appendChild(root);                
-                
-                Document answer = hc.execute("users", data);
-                responseViewModel.hasError = Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent());
-                responseViewModel.errorMessage = answer.getElementsByTagName("errorMessage").item(0).getTextContent();
+                data.appendChild(root);
 
-                System.out.println(responseViewModel.hasError);
-                System.out.println(responseViewModel.errorMessage);
+                Document answer = hc.execute("users", data);
+                responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent()));
+                responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
+
 
             } catch (ParserConfigurationException | DOMException | TransformerException | SAXException | IOException ex){
                 System.out.println(ex);
