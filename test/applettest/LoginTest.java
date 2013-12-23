@@ -82,7 +82,7 @@ public class LoginTest {
                 data.appendChild(root);
 
                 Document answer = hc.execute("application", data);
-                responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent()));
+                responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("isError").item(0).getTextContent()));
                 responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
 
                 System.out.println(responseViewModel.isError()+"");
