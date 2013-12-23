@@ -2,8 +2,8 @@ package applettest;
 
 import asw1009.HTTPClient;
 import asw1009.ManageXML;
-import asw1009.models.request.LoginRequestViewModel;
-import asw1009.models.response.BaseResponseViewModel;
+import asw1009.viewmodel.request.LoginRequestViewModel;
+import asw1009.viewmodel.response.BaseResponseViewModel;
 import java.awt.*;
 import javax.swing.JFrame;
 import java.awt.event.*;
@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
 
 public class LoginTest {
 
-    static final String BASE = "http://localhost:8080/WebApplication/";
+    static final String BASE = "http://localhost:8080/";
     static HTTPClient hc = new HTTPClient();
     static boolean logged = false;
 

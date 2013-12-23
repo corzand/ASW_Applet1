@@ -1,8 +1,8 @@
 
 import asw1009.HTTPClient;
 import asw1009.ManageXML;
-import asw1009.models.request.LoginRequestViewModel;
-import asw1009.models.response.BaseResponseViewModel;
+import asw1009.viewmodel.request.LoginRequestViewModel;
+import asw1009.viewmodel.response.BaseResponseViewModel;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
