@@ -124,7 +124,7 @@ public class LoginApplet extends JApplet {
 
                     cp.add(lbl_password);
                     cp.add(txt_password);
-
+                    System.out.println("Prova");
                     cp.add(btn_login);
                     cp.add(lbl_result);
                 }
