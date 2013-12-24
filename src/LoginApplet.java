@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -51,7 +52,6 @@ public class LoginApplet extends JApplet {
             try {
 
                 //Code below: JSON over HTTP
-                
 //                JSONObject jsonData = new JSONObject();
 //                jsonData.put("username", viewModel.username);
 //                jsonData.put("password", viewModel.password);
@@ -60,9 +60,7 @@ public class LoginApplet extends JApplet {
 //                JSONObject jsonAnswer = new JSONObject(answer);
 //                responseViewModel.hasError = jsonAnswer.getBoolean("hasError");
 //                responseViewModel.errorMessage = jsonAnswer.getString("errorMessage");
-
                 //Code below: XML over HTTP
-                
                 ManageXML mngXML = new ManageXML();
 
                 Document data = mngXML.newDocument();
@@ -83,8 +81,14 @@ public class LoginApplet extends JApplet {
                 responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent()));
                 responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
 
-                lbl_result.setText(responseViewModel.isError() ? responseViewModel.getErrorMessage() : "logged-in");
+                //lbl_result.setText(responseViewModel.isError() ? responseViewModel.getErrorMessage() : "logged-in");
 
+                if (!responseViewModel.isError()) {
+                    getAppletContext().showDocument(new URL(
+                            getCodeBase().getProtocol(),
+                            getCodeBase().getHost(), 
+                            getCodeBase().getPort(), "/application/index"), "_self");
+                }
             } catch (TransformerConfigurationException ex) {
                 Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ParserConfigurationException | SAXException | TransformerException ex) {
@@ -124,7 +128,7 @@ public class LoginApplet extends JApplet {
 
                     cp.add(lbl_password);
                     cp.add(txt_password);
-                    System.out.println("Prova");
+                    
                     cp.add(btn_login);
                     cp.add(lbl_result);
                 }
