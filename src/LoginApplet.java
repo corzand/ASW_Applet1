@@ -81,9 +81,9 @@ public class LoginApplet extends JApplet {
                 responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent()));
                 responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
 
-                //lbl_result.setText(responseViewModel.isError() ? responseViewModel.getErrorMessage() : "logged-in");
+                //lbl_result.setText(responseViewModel.hasError() ? responseViewModel.getErrorMessage() : "logged-in");
 
-                if (!responseViewModel.isError()) {
+                if (!responseViewModel.hasError()) {
                     getAppletContext().showDocument(new URL(
                             getCodeBase().getProtocol(),
                             getCodeBase().getHost(), 

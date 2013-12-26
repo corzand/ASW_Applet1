@@ -73,7 +73,7 @@ public class LoginTest {
                 responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("isError").item(0).getTextContent()));
                 responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
 
-                System.out.println(responseViewModel.isError()+"");
+                System.out.println(responseViewModel.hasError()+"");
                 System.out.println(responseViewModel.getErrorMessage());
 
             } catch (ParserConfigurationException | DOMException | TransformerException | SAXException | IOException ex){
