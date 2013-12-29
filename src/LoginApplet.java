@@ -77,7 +77,7 @@ public class LoginApplet extends JApplet {
 
                 data.appendChild(root);
 
-                Document answer = hc.execute("application", data);
+                Document answer = hc.execute("/users/", data);
                 responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent()));
                 responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
 
@@ -87,7 +87,7 @@ public class LoginApplet extends JApplet {
                     getAppletContext().showDocument(new URL(
                             getCodeBase().getProtocol(),
                             getCodeBase().getHost(), 
-                            getCodeBase().getPort(), "/application/index"), "_self");
+                            getCodeBase().getPort(), "/application/tasks"), "_self");
                 }
             } catch (TransformerConfigurationException ex) {
                 Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
