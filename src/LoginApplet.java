@@ -3,7 +3,9 @@ import asw1009.HTTPClient;
 import asw1009.ManageXML;
 import asw1009.viewmodel.request.LoginRequestViewModel;
 import asw1009.viewmodel.response.BaseResponseViewModel;
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +16,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import static javax.swing.JOptionPane.showMessageDialog;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -21,11 +24,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-/**
- * Applet used to manage Login.
- *
- * @author Andrea
- */
 public class LoginApplet extends JApplet {
 
     HTTPClient hc = new HTTPClient();
@@ -40,6 +38,9 @@ public class LoginApplet extends JApplet {
     JButton btn_login = new JButton("Login");
     JLabel lbl_result = new JLabel("not logged");
 
+    JOptionPane errorPanel = new JOptionPane();
+    
+    //private ErrorDlg dlg;
     class LoginListener implements ActionListener {
 
         @Override
@@ -51,15 +52,6 @@ public class LoginApplet extends JApplet {
             viewModel.setPassword(new String(txt_password.getPassword()));
             try {
 
-                //Code below: JSON over HTTP
-//                JSONObject jsonData = new JSONObject();
-//                jsonData.put("username", viewModel.username);
-//                jsonData.put("password", viewModel.password);
-//                String answer = hc.execute("users/login/", jsonData.toString());
-//
-//                JSONObject jsonAnswer = new JSONObject(answer);
-//                responseViewModel.hasError = jsonAnswer.getBoolean("hasError");
-//                responseViewModel.errorMessage = jsonAnswer.getString("errorMessage");
                 //Code below: XML over HTTP
                 ManageXML mngXML = new ManageXML();
 
@@ -81,13 +73,15 @@ public class LoginApplet extends JApplet {
                 responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent()));
                 responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
 
-                //lbl_result.setText(responseViewModel.hasError() ? responseViewModel.getErrorMessage() : "logged-in");
-
+                //lbl_result.setText(responseViewModel.hasError() ? responseViewModel.getErrorMessage() : "logged-in")
                 if (!responseViewModel.hasError()) {
                     getAppletContext().showDocument(new URL(
                             getCodeBase().getProtocol(),
-                            getCodeBase().getHost(), 
+                            getCodeBase().getHost(),
                             getCodeBase().getPort(), "/application/tasks"), "_self");
+                } else {
+                    errorPanel.showMessageDialog(null, responseViewModel.getErrorMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
+                    
                 }
             } catch (TransformerConfigurationException ex) {
                 Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
@@ -116,11 +110,6 @@ public class LoginApplet extends JApplet {
                     Container cp = getContentPane();
                     cp.setLayout(new GridLayout(3, 2));
 
-                    //JPanel main = new JPanel();  
-                    //        In main:
-                    //        JPanel User (lbl+txt)->FlowLayout(center)
-                    //        JPanel Password (lbl+txt)->FlowLayout(center)
-                    //        JPanel Button (btn)->FlowLayout(right)
                     btn_login.addActionListener(loginListener);
 
                     cp.add(lbl_user);
@@ -128,7 +117,7 @@ public class LoginApplet extends JApplet {
 
                     cp.add(lbl_password);
                     cp.add(txt_password);
-                    
+
                     cp.add(btn_login);
                     cp.add(lbl_result);
                 }
@@ -139,4 +128,5 @@ public class LoginApplet extends JApplet {
         }
 
     }
+
 }
