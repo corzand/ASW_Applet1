@@ -1,4 +1,3 @@
-
 import asw1009.HTTPClient;
 import asw1009.ManageXML;
 import asw1009.viewmodel.request.LoginRequestViewModel;
