@@ -1,3 +1,4 @@
+
 import asw1009.HTTPClient;
 import asw1009.ManageXML;
 import asw1009.viewmodel.request.LoginRequestViewModel;
@@ -26,7 +27,7 @@ public class LoginApplet extends JApplet {
     boolean logged = false;
 
     JLabel lbl_user = new JLabel("Username: ");
-    
+
     JTextField txt_user = new JTextField(10);
 
     JLabel lbl_password = new JLabel("Password: ");
@@ -35,7 +36,7 @@ public class LoginApplet extends JApplet {
     JButton btn_login = new JButton("Login");
 
     JOptionPane errorPanel = new JOptionPane();
-    
+
     //private ErrorDlg dlg;
     class LoginListener implements ActionListener {
 
@@ -77,7 +78,7 @@ public class LoginApplet extends JApplet {
                             getCodeBase().getPort(), "/application/tasks"), "_self");
                 } else {
                     errorPanel.showMessageDialog(null, responseViewModel.getErrorMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
-                    
+
                 }
             } catch (TransformerConfigurationException ex) {
                 Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,25 +109,26 @@ public class LoginApplet extends JApplet {
                     //cp.setBounds(0, 0, 200, 100);
                     
                     cp.setLayout(null);
-                   
-                    cp.setBackground(Color.decode("#fcefa1"));
+
+                    cp.setBackground(Color.decode("#FFFFFF"));
 
                     btn_login.addActionListener(loginListener);
-                    
+
                     lbl_user.setBounds(10, 10, 80, 25);
                     cp.add(lbl_user);
-                    
+
                     txt_user.setBounds(100, 10, 160, 25);
                     cp.add(txt_user);
-                    
+
                     lbl_password.setBounds(10, 40, 80, 25);
                     cp.add(lbl_password);
-                    
+
                     txt_password.setBounds(100, 40, 160, 25);
                     cp.add(txt_password);
-                    
+
                     btn_login.setBounds(10, 80, 80, 25);
-                    cp.add(btn_login);   
+                    cp.add(btn_login);
+
                 }
             });
         } catch (InterruptedException | InvocationTargetException ex) {
