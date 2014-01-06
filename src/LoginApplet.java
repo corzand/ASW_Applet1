@@ -3,10 +3,8 @@ import asw1009.HTTPClient;
 import asw1009.ManageXML;
 import asw1009.viewmodel.request.LoginRequestViewModel;
 import asw1009.viewmodel.response.BaseResponseViewModel;
-import java.awt.Component;
+import java.awt.Color;
 import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -16,7 +14,6 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import static javax.swing.JOptionPane.showMessageDialog;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -30,13 +27,13 @@ public class LoginApplet extends JApplet {
     boolean logged = false;
 
     JLabel lbl_user = new JLabel("Username: ");
+    
     JTextField txt_user = new JTextField(10);
 
     JLabel lbl_password = new JLabel("Password: ");
     JPasswordField txt_password = new JPasswordField(10);
 
     JButton btn_login = new JButton("Login");
-    JLabel lbl_result = new JLabel("not logged");
 
     JOptionPane errorPanel = new JOptionPane();
     
@@ -108,25 +105,33 @@ public class LoginApplet extends JApplet {
                 public void run() {
 
                     Container cp = getContentPane();
-                    cp.setLayout(new GridLayout(3, 2));
+                    //cp.setLayout(new GridLayout(3, 2));
+                    //cp.setBounds(0, 0, 200, 100);
+                    
+                    cp.setLayout(null);
+                   
+                    cp.setBackground(Color.decode("#fcefa1"));
 
                     btn_login.addActionListener(loginListener);
-
+                    
+                    lbl_user.setBounds(10, 10, 80, 25);
                     cp.add(lbl_user);
+                    
+                    txt_user.setBounds(100, 10, 160, 25);
                     cp.add(txt_user);
-
+                    
+                    lbl_password.setBounds(10, 40, 80, 25);
                     cp.add(lbl_password);
+                    
+                    txt_password.setBounds(100, 40, 160, 25);
                     cp.add(txt_password);
-
-                    cp.add(btn_login);
-                    cp.add(lbl_result);
+                    
+                    btn_login.setBounds(10, 80, 80, 25);
+                    cp.add(btn_login);   
                 }
             });
-
         } catch (InterruptedException | InvocationTargetException ex) {
             Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
-
 }
