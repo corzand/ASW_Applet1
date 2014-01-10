@@ -6,9 +6,14 @@ import asw1009.viewmodel.response.BaseResponseViewModel;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,7 +33,7 @@ public class LoginApplet extends JApplet {
     boolean logged = false;
 
     JLabel lbl_user,
-           lbl_password;
+            lbl_password;
 
     JTextField txt_user = new JTextField(10);
 
@@ -39,12 +44,25 @@ public class LoginApplet extends JApplet {
     JOptionPane errorPanel = new JOptionPane();
 
     public LoginApplet() {
-        this.lbl_password = new JLabel("Password: ");
-        this.lbl_user = new JLabel("Username: ");
-        lbl_user.setFont(new Font("Arial",0,16));
-        lbl_password.setFont(new Font("Arial",0,16));
-        txt_user.setFont(new Font("Arial",0,14));
-        btn_login.setFont(new Font("Arial",0,14));           
+        try {  
+            Font font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("OpenSans-Regular.ttf"));
+
+            
+            
+            
+            this.lbl_password = new JLabel("Password: ");
+            this.lbl_user = new JLabel("Username: ");
+            lbl_user.setFont(font.deriveFont(0, 16));
+            lbl_password.setFont(font.deriveFont(0, 16));
+            txt_user.setFont(font.deriveFont(0, 14));
+            btn_login.setFont(font.deriveFont(0, 14));
+        } catch (FontFormatException ex) {
+            Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            
     }
 
     class LoginListener implements ActionListener {
@@ -121,13 +139,13 @@ public class LoginApplet extends JApplet {
 
                     btn_login.addActionListener(loginListener);
 
-                    lbl_user.setBounds(10, 10, 80, 25);
+                    lbl_user.setBounds(10, 10, 100, 25);
                     cp.add(lbl_user);
 
                     txt_user.setBounds(100, 10, 160, 25);
                     cp.add(txt_user);
 
-                    lbl_password.setBounds(10, 40, 80, 25);
+                    lbl_password.setBounds(10, 40, 100, 25);
                     cp.add(lbl_password);
 
                     txt_password.setBounds(100, 40, 160, 25);
