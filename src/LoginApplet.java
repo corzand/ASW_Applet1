@@ -5,6 +5,7 @@ import asw1009.viewmodel.request.LoginRequestViewModel;
 import asw1009.viewmodel.response.BaseResponseViewModel;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -26,18 +27,26 @@ public class LoginApplet extends JApplet {
     HTTPClient hc = new HTTPClient();
     boolean logged = false;
 
-    JLabel lbl_user = new JLabel("Username: ");
+    JLabel lbl_user,
+           lbl_password;
 
     JTextField txt_user = new JTextField(10);
 
-    JLabel lbl_password = new JLabel("Password: ");
     JPasswordField txt_password = new JPasswordField(10);
 
     JButton btn_login = new JButton("Login");
 
     JOptionPane errorPanel = new JOptionPane();
 
-    //private ErrorDlg dlg;
+    public LoginApplet() {
+        this.lbl_password = new JLabel("Password: ");
+        this.lbl_user = new JLabel("Username: ");
+        lbl_user.setFont(new Font("Arial",0,16));
+        lbl_password.setFont(new Font("Arial",0,16));
+        txt_user.setFont(new Font("Arial",0,14));
+        btn_login.setFont(new Font("Arial",0,14));           
+    }
+
     class LoginListener implements ActionListener {
 
         @Override
@@ -105,12 +114,10 @@ public class LoginApplet extends JApplet {
                 public void run() {
 
                     Container cp = getContentPane();
-                    //cp.setLayout(new GridLayout(3, 2));
-                    //cp.setBounds(0, 0, 200, 100);
-                    
+
                     cp.setLayout(null);
 
-                    cp.setBackground(Color.decode("#FFFFFF"));
+                    cp.setBackground(Color.decode("#6DBCDB"));
 
                     btn_login.addActionListener(loginListener);
 
