@@ -1,4 +1,3 @@
-
 import asw1009.HTTPClient;
 import asw1009.ManageXML;
 import asw1009.viewmodel.request.LoginRequestViewModel;
@@ -6,14 +5,9 @@ import asw1009.viewmodel.response.BaseResponseViewModel;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,38 +25,24 @@ public class LoginApplet extends JApplet {
 
     HTTPClient hc = new HTTPClient();
     boolean logged = false;
-
-    JLabel lbl_user,
-            lbl_password;
-
-    JTextField txt_user = new JTextField(10);
-
-    JPasswordField txt_password = new JPasswordField(10);
-
+    
+    JLabel lbl_user =  new JLabel("Username: ");
+    JLabel lbl_password = new JLabel("Password: ");
     JButton btn_login = new JButton("Login");
-
+    
+    JTextField txt_user = new JTextField(10);
+    JPasswordField txt_password = new JPasswordField(10);
+      
     JOptionPane errorPanel = new JOptionPane();
+    
+    Font font = new Font("Arial", Font.PLAIN, 16);
 
-    public LoginApplet() {
-        try {  
-            Font font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("OpenSans-Regular.ttf"));
-
-            
-            
-            
-            this.lbl_password = new JLabel("Password: ");
-            this.lbl_user = new JLabel("Username: ");
-            lbl_user.setFont(font.deriveFont(0, 16));
-            lbl_password.setFont(font.deriveFont(0, 16));
-            txt_user.setFont(font.deriveFont(0, 14));
-            btn_login.setFont(font.deriveFont(0, 14));
-        } catch (FontFormatException ex) {
-            Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            
-            
+    public LoginApplet() {     
+        this.lbl_user.setFont(font);
+        this.lbl_password.setFont(font);
+        this.txt_user.setFont(font);
+        this.btn_login.setFont(font);
+        this.errorPanel.setFont(font);
     }
 
     class LoginListener implements ActionListener {
@@ -132,28 +112,20 @@ public class LoginApplet extends JApplet {
                 public void run() {
 
                     Container cp = getContentPane();
-
                     cp.setLayout(null);
-
                     cp.setBackground(Color.decode("#6DBCDB"));
 
                     btn_login.addActionListener(loginListener);
-
                     lbl_user.setBounds(10, 10, 100, 25);
                     cp.add(lbl_user);
-
                     txt_user.setBounds(100, 10, 160, 25);
                     cp.add(txt_user);
-
                     lbl_password.setBounds(10, 40, 100, 25);
                     cp.add(lbl_password);
-
                     txt_password.setBounds(100, 40, 160, 25);
                     cp.add(txt_password);
-
                     btn_login.setBounds(10, 80, 80, 25);
                     cp.add(btn_login);
-
                 }
             });
         } catch (InterruptedException | InvocationTargetException ex) {
