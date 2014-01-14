@@ -94,7 +94,7 @@ public class LoginApplet extends JApplet {
                     getAppletContext().showDocument(new URL(
                             getCodeBase().getProtocol(),
                             getCodeBase().getHost(),
-                            getCodeBase().getPort(), "/application/tasks"), "_self");
+                            getCodeBase().getPort(), "/application/tasks/"), "_self");
                 } else {
                     errorMessage = responseViewModel.getErrorMessage();
                     SwingUtilities.invokeLater(new Runnable() {
@@ -106,9 +106,8 @@ public class LoginApplet extends JApplet {
                             lbl_error.setText(errorMessage);
                             lbl_error.setVisible(true);
                         }
-                    });
+                    });                    
                     
-                    //JOptionPane.showMessageDialog(null, responseViewModel.getErrorMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (TransformerConfigurationException ex) {
                 Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
@@ -127,6 +126,7 @@ public class LoginApplet extends JApplet {
     @Override
     public void init() {
         try {
+            hc.setSessionId(getParameter("sessionId"));
             hc.setBase(getDocumentBase());
             
             SwingUtilities.invokeAndWait(new Runnable() {
