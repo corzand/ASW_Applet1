@@ -1,8 +1,8 @@
 
 import asw1009.HTTPClient;
 import asw1009.ManageXML;
-import asw1009.viewmodel.request.LoginRequestViewModel;
-import asw1009.viewmodel.response.BaseResponseViewModel;
+import asw1009.requests.LoginRequest;
+import asw1009.responses.BaseResponse;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -56,8 +56,8 @@ public class LoginApplet extends JApplet {
         
         @Override
         public void actionPerformed(ActionEvent e) {
-            LoginRequestViewModel viewModel = new LoginRequestViewModel();
-            BaseResponseViewModel responseViewModel = new BaseResponseViewModel();
+            LoginRequest viewModel = new LoginRequest();
+            BaseResponse responseViewModel = new BaseResponse();
             
             viewModel.setUsername(txt_user.getText());
             viewModel.setPassword(new String(txt_password.getPassword()));
