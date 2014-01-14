@@ -15,6 +15,8 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -26,10 +28,12 @@ public class LoginApplet extends JApplet {
     
     HTTPClient hc = new HTTPClient();
     boolean logged = false;
+    String errorMessage = "";
     
     JLabel lbl_user = new JLabel("Username: ");
     JLabel lbl_password = new JLabel("Password: ");
     JLabel lbl_remember = new JLabel("Ricordami");
+    JLabel lbl_error = new JLabel("");
     JButton btn_login = new JButton("Login");
     
     JCheckBox chk_remember = new JCheckBox();
@@ -57,11 +61,7 @@ public class LoginApplet extends JApplet {
             
             viewModel.setUsername(txt_user.getText());
             viewModel.setPassword(new String(txt_password.getPassword()));
-            if (chk_remember.isSelected()) {
-                viewModel.setRemember("true");
-            } else {
-                viewModel.setRemember("false");
-            }
+            viewModel.setRemember(chk_remember.isSelected());
             
             try {
 
@@ -78,7 +78,7 @@ public class LoginApplet extends JApplet {
                 password.setTextContent(viewModel.getPassword());
                 
                 Element remember = data.createElement("remember");
-                remember.setTextContent(viewModel.getRemember());
+                remember.setTextContent(viewModel.getRemember() + "");
                 
                 root.appendChild(username);
                 root.appendChild(password);
@@ -90,14 +90,25 @@ public class LoginApplet extends JApplet {
                 responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent()));
                 responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
 
-                //lbl_result.setText(responseViewModel.hasError() ? responseViewModel.getErrorMessage() : "logged-in")
                 if (!responseViewModel.hasError()) {
                     getAppletContext().showDocument(new URL(
                             getCodeBase().getProtocol(),
                             getCodeBase().getHost(),
                             getCodeBase().getPort(), "/application/tasks"), "_self");
                 } else {
-                    errorPanel.showMessageDialog(null, responseViewModel.getErrorMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
+                    errorMessage = responseViewModel.getErrorMessage();
+                    SwingUtilities.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            txt_password.setBorder(new LineBorder(Color.red));
+                            txt_user.setBorder(new LineBorder(Color.red));
+                            lbl_error.setText(errorMessage);
+                            lbl_error.setVisible(true);
+                        }
+                    });
+                    
+                    //JOptionPane.showMessageDialog(null, responseViewModel.getErrorMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (TransformerConfigurationException ex) {
                 Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
@@ -116,7 +127,6 @@ public class LoginApplet extends JApplet {
     @Override
     public void init() {
         try {
-            hc.setSessionId(getParameter("sessionId"));
             hc.setBase(getDocumentBase());
             
             SwingUtilities.invokeAndWait(new Runnable() {
@@ -130,34 +140,39 @@ public class LoginApplet extends JApplet {
                     btn_login.addActionListener(loginListener);
                     
                     lbl_user.setBounds(10, 10, 100, 25);
-                    cp.add(lbl_user);
+                    cp.add(lbl_user);                    
                     
-                    System.out.println("Ecco l'username: " + getParameter("username"));
-                    System.out.println("Ecco la pass : " + getParameter("password"));
-                    
-                    if (getParameter("username") != null) {
-                        txt_user.setText(getParameter("username"));
-                    }
                     txt_user.setBounds(100, 10, 160, 25);
                     cp.add(txt_user);
                     
                     lbl_password.setBounds(10, 40, 100, 25);
                     cp.add(lbl_password);
                     
-                    if (getParameter("password") != null) {
-                        txt_password.setText(getParameter("password"));
-                    }
                     txt_password.setBounds(100, 40, 160, 25);
                     cp.add(txt_password);
                     
-                    btn_login.setBounds(10, 80, 80, 25);
-                    cp.add(btn_login);
+                    btn_login.setBounds(10, 100, 80, 25);
+                    cp.add(btn_login);                    
                     
-                    chk_remember.setBounds(160, 80, 30, 25);
-                    cp.add(chk_remember);
+                    chk_remember.setBounds(160, 100, 30, 25);
+                    chk_remember.setBackground(Color.decode("#6DBCDB"));
+                    cp.add(chk_remember);                 
                     
-                    lbl_remember.setBounds(190, 80, 100, 25);
+                    
+                    lbl_remember.setBounds(190, 100, 100, 25);
                     cp.add(lbl_remember);
+                    
+                    lbl_error.setBounds(10, 70, 400, 30);
+                    lbl_error.setForeground(Color.red);
+                    lbl_error.setVisible(false);
+                    cp.add(lbl_error);
+                    
+                    
+                    if (getParameter("username") != null && getParameter("password") != null) {
+                        txt_user.setText(getParameter("username"));                        
+                        txt_password.setText(getParameter("password"));
+                        chk_remember.setSelected(true);
+                    }
                 }
             });
         } catch (InterruptedException | InvocationTargetException ex) {
