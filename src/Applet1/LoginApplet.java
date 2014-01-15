@@ -1,3 +1,5 @@
+package Applet1;
+
 
 import asw1009.HTTPClient;
 import asw1009.ManageXML;
