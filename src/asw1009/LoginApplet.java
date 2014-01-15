@@ -1,4 +1,4 @@
-package Applet1;
+package asw1009;
 
 
 import asw1009.HTTPClient;
