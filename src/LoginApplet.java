@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -24,8 +23,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+/**
+ * Applet utilizzata per effettuare il login nell'applicazione
+ * @author ASW1009
+ */
 public class LoginApplet extends JApplet {
     
+    //Utility HTTPClient per effettuare chiamate HTTP dalla applet verso la servlet
     HTTPClient hc = new HTTPClient();
     boolean logged = false;
     String errorMessage = "";
@@ -39,21 +43,23 @@ public class LoginApplet extends JApplet {
     JCheckBox chk_remember = new JCheckBox();
     JTextField txt_user = new JTextField(10);
     JPasswordField txt_password = new JPasswordField(10);
-    
-    JOptionPane errorPanel = new JOptionPane();
-    
+        
     Font font = new Font("Arial", Font.PLAIN, 16);
     
+    /**
+     * Costruttore di default, viene soltanto impostato il font
+     */
     public LoginApplet() {
-        this.lbl_user.setFont(font);
-        this.lbl_password.setFont(font);
-        this.txt_user.setFont(font);
-        this.btn_login.setFont(font);
-        this.errorPanel.setFont(font);
     }
     
     class LoginListener implements ActionListener {
-        
+        /**
+         * nel metodo viene preparata la request da inviare al server, con i campi impostati dall'utente.
+         * Una volta preparato l'oggetto da inviare, si scrive il file XML corrispondente, e si invia al server
+         * attraverso il metodo execute di httpClient. Quando viene ricevuta risposta, se positiva si effettua un redirect
+         * all'url dalla pagina tasks, altrimenti si modifica la view mostrando l'errore ricevuto, utilizzando sempre invokeLater .
+         * @param e rappresenta l'evento di pressione del button login
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             LoginRequest viewModel = new LoginRequest();
@@ -129,6 +135,8 @@ public class LoginApplet extends JApplet {
             hc.setSessionId(getParameter("sessionId"));
             hc.setBase(getDocumentBase());
             
+            //Invocato attraverso il metodo invoke and wait, per non interagire
+            //con la GUI da un thread che non sia il GUI-thread
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
@@ -152,7 +160,12 @@ public class LoginApplet extends JApplet {
                     cp.add(txt_password);
                     
                     btn_login.setBounds(10, 100, 80, 25);
-                    cp.add(btn_login);                    
+                    cp.add(btn_login);   
+                    
+                    lbl_user.setFont(font);
+                    lbl_password.setFont(font);
+                    txt_user.setFont(font);
+                    btn_login.setFont(font);
                     
                     chk_remember.setBounds(160, 100, 30, 25);
                     chk_remember.setBackground(Color.decode("#6DBCDB"));
@@ -167,7 +180,7 @@ public class LoginApplet extends JApplet {
                     lbl_error.setVisible(false);
                     cp.add(lbl_error);
                     
-                    
+                    //Se sono presenti cookies passati come parametro alla applet, i campi vengono precompilati
                     if (getParameter("username") != null && getParameter("password") != null) {
                         txt_user.setText(getParameter("username"));                        
                         txt_password.setText(getParameter("password"));
