@@ -94,15 +94,17 @@ public class LoginApplet extends JApplet {
                 
                 data.appendChild(root);
                 
-                Document answer = hc.execute("/users/", data);
+                Document answer = hc.execute("users/", data);
                 responseViewModel.setError(Boolean.parseBoolean(answer.getElementsByTagName("hasError").item(0).getTextContent()));
                 responseViewModel.setErrorMessage(answer.getElementsByTagName("errorMessage").item(0).getTextContent());
-
+                
                 if (!responseViewModel.hasError()) {
-                    getAppletContext().showDocument(new URL(
+                    URL redirection = new URL(
                             getCodeBase().getProtocol(),
                             getCodeBase().getHost(),
-                            getCodeBase().getPort(), "/application/tasks/"), "_self");
+                            getCodeBase().getPort(), getParameter("context") + "application/tasks/");
+
+                    getAppletContext().showDocument(redirection);
                 } else {
                     errorMessage = responseViewModel.getErrorMessage();
                     SwingUtilities.invokeLater(new Runnable() {
@@ -135,7 +137,7 @@ public class LoginApplet extends JApplet {
     public void init() {
         try {
             hc.setSessionId(getParameter("sessionId"));
-            hc.setBase(getDocumentBase());
+            hc.setBase(new URL(getCodeBase(),getParameter("context")));
             
             //Invocato attraverso il metodo invoke and wait, per non interagire
             //con la GUI da un thread che non sia il GUI-thread
@@ -191,6 +193,8 @@ public class LoginApplet extends JApplet {
                 }
             });
         } catch (InterruptedException | InvocationTargetException ex) {
+            Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
             Logger.getLogger(LoginApplet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
